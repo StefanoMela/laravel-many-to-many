@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\StoreProjectRequest;
 use App\Http\Requests\Auth\UpdateProjectRequest;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Support\Str;
 use Termwind\Components\Dd;
@@ -50,6 +51,8 @@ class ProjectController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $project->fill($data);
         $project->save();
+
+        $project->technologies()->attach(1);
 
         return redirect()
         ->route('admin.projects.show', $project)

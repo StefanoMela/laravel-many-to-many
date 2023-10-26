@@ -10,6 +10,7 @@
       <div class="card-body text-center">
         <h5 class="card-title">{{ $project->title }}</h5>
         <p class="card-text"><strong>Tipo: </strong>{!! $project->getBadge() !!}</p>
+        <p class="card-text"><strong>Tecnologie Usate:</strong></p>
         <p class="card-text"><strong>Descrizione: </strong>{{ $project->description }}</p>
         <p class="card-text"><strong>Slug: </strong>{{ $project->slug }}</p>
         <p class="card-text"><strong>Url: </strong>{{ $project->url }}</p>

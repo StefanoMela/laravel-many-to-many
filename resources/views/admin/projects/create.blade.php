@@ -32,7 +32,7 @@
             <select name="type_id" id="type_id" class="form-control @error('type_id') is-invalid @enderror">
                 <option>Seleziona</option>
                 @foreach ($types as $type)
-                <option value="{{$type->id}}" @if (old('$type_id') == $type->id ) selected @endif>{{$type->label}}
+                <option value="{{$type->id}}" @if (old('$type_id')==$type->id ) selected @endif>{{$type->label}}
                 </option>
                 @endforeach
             </select>
