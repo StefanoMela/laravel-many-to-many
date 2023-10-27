@@ -43,14 +43,28 @@
             @enderror
         </div>
         <div class="col-12">
-            <div class="row">
+            <label for="technologies" class="form-label">Tecnologie del progetto</label>
+            <div class="form-check @error('technologies') is-invalid @enderror">
                 @foreach ($technologies as $technology)
                 <div class="col-12">
-                    <input type="checkbox" class="form-check-control" name="technologies[]" id="technology-{{$technology->id}}" value="{{$technology->id}}">
-                    <label for="technology-{{$technology->id}}">{{$technology->label}}</label>
+                    <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    name="technologies[]"
+                    id="technology-{{$technology->id}}" 
+                    value="{{$technology->id}}"
+                    @if(in_array($technology->id, old('technologies')?? [])) checked
+                    @endif
+                    >
+                    <label class="form-check-label" for="technology-{{$technology->id}}">{{$technology->label}}</label>
                 </div>
                 @endforeach
             </div>
+            @error('technologies')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
         </div>
         <div class="col-6">
             <label for="description" class="form-label">Descrizione</label>

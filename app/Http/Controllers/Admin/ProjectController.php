@@ -21,10 +21,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $title = "Laravel Boolfolio - Base";
-        $projects = Project::orderby('id','desc')->paginate(15); // paginazione con ordine discdente in base all' ID
-        $technologies = Technology::all();
-        return view("admin.projects.index", compact("title","projects",'technologies'));
+        $title = 'Laravel Boolfolio - Base';
+        $projects = Project::orderby('id', 'desc')->paginate(15); // paginazione con ordine discdente in base all' ID
+        return view('admin.projects.index', compact('title', 'projects'));
     }
 
     /**
@@ -34,8 +33,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $types = Type::all();
         $technologies = Technology::all();
+        $types = Type::all();
         return view('admin.projects.create', compact('types', 'technologies'));
     }
 
@@ -49,17 +48,17 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        
+
         $project = new Project();
         $data['slug'] = Str::slug($data['title']);
         $project->fill($data);
         $project->save();
         $project->technologies()->attach($data['technologies']);
-        
+
         return redirect()
-        ->route('admin.projects.show', $project)
-        ->with('message_type', 'success')
-        ->with('message', 'Progetto creato con successo');
+            ->route('admin.projects.show', $project)
+            ->with('message_type', 'success')
+            ->with('message', 'Progetto creato con successo');
     }
 
     /**
@@ -70,7 +69,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view("admin.projects.show", compact("project"));
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -84,7 +83,9 @@ class ProjectController extends Controller
 
         // $project = Project::findOrFail($id) -> metodo usabile quando non usiamo la dependecy injection
         $technologies = Technology::all();
-        return view("admin.projects.edit", compact("project","types"));
+        $types = Type::all();
+        $tech_ids = $project->technologies->pluck('id')->toArray();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies', 'tech_ids'));
     }
 
     /**
@@ -97,12 +98,20 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $data = $request->validated();
+
         $data['slug'] = Str::slug($data['title']);
         $project->update($data);
+
+        if (isset($data['technologies'])) {
+            $project->technologies()->sync($data['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
+
         return redirect()
-        ->route('admin.projects.show', $project)
-        ->with('message_type', 'success')
-        ->with('message', 'Progetto modificato con successo');
+            ->route('admin.projects.show', $project)
+            ->with('message_type', 'success')
+            ->with('message', 'Progetto modificato con successo');
     }
 
     /**
@@ -113,10 +122,11 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->detach();
         $project->delete();
         return redirect()
-        ->route('admin.projects.index')
-        ->with('message_type', 'danger')
-        ->with('message', 'Progetto eliminato con successo');
+            ->route('admin.projects.index')
+            ->with('message_type', 'danger')
+            ->with('message', 'Progetto eliminato con successo');
     }
 }

@@ -32,7 +32,7 @@ class StoreProjectRequest extends FormRequest
             'description'=>'required|string',
             'url'=>'required|string',
             'type_id'=>'nullable|exists:types,id',
-            'technologies' => 'nullable|exists:technologies,id',
+            'technologies' => 'required|exists:technologies,id',
         ];
     }
 
@@ -47,6 +47,8 @@ class StoreProjectRequest extends FormRequest
             'url.required'=> 'L\'url non deve essere vuoto',
             'url.string'=> 'L\'url deve essere una stringa',
             'type_id.exists'=>'La categoria non è valida',
+            'technologies.required'=>'Scegli almeno una tecnologia',
+            'technologies.exists'=>'La tecnologia non è valida'
 
         ];
     }

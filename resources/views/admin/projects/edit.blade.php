@@ -15,12 +15,13 @@
     @endif
 </div>
 <div class="container my-3 d-flex flex-column flex-wrap justify-content-center align-items-center">
-    <form action="{{route('admin.projects.update', $project)}}" method="POST" class="row">
+    <form action="{{route('admin.projects.update', $project)}}" method="POST" class="row g-3">
         @csrf
         @method('PUT')
         <div class="col-6">
             <label for="title" class="form-label">Titolo</label>
-            <input type="text"  name="title" id="title" value="{{old('title') ?? $project->title}}" class="form-control @error('title') is-invalid @enderror">
+            <input type="text" name="title" id="title" value="{{old('title') ?? $project->title}}"
+                class="form-control @error('title') is-invalid @enderror">
             @error('title')
             <div class="invalid-feedback">
                 {{$message}}
@@ -32,7 +33,8 @@
             <select name="type_id" id="type_id" class="form-control @error('type_id') is-invalid @enderror">
                 <option>Seleziona</option>
                 @foreach ($types as $type)
-                <option value="{{$type->id}}" @if (old('$type_id') ?? $project->type_id == $type->id ) selected @endif>{{$type->label}}
+                <option value="{{$type->id}}" @if (old('$type_id') ?? $project->type_id == $type->id ) selected
+                    @endif>{{$type->label}}
                 </option>
                 @endforeach
             </select>
@@ -42,9 +44,35 @@
             </div>
             @enderror
         </div>
+        <div class="col-12">
+            <label for="technologies" class="form-label">Tecnologie del progetto</label>
+            <div class="form-check @error('technologies') is-invalid @enderror">
+                @foreach ($technologies as $technology)
+                <div class="col-12">
+                    <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    name="technologies[]"
+                    id="technology-{{$technology->id}}" 
+                    value="{{$technology->id}}"
+                    @if(in_array($technology->id, old('technologies') ?? $tech_ids)) checked
+                    @endif
+                    >
+                    <label class="form-check-label" for="technology-{{$technology->id}}">{{$technology->label}}</label>
+                </div>
+                @endforeach
+            </div>
+            @error('technologies')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
+        </div>
         <div class="col-6">
             <label for="description" class="form-label">Descrizione</label>
-            <input type="text"  name="description" id="description" value="{{old('description') ?? $project->description}}" class="form-control @error('description') is-invalid @enderror">
+            <input type="text" name="description" id="description"
+                value="{{old('description') ?? $project->description}}"
+                class="form-control @error('description') is-invalid @enderror">
             @error('description')
             <div class="invalid-feedback">
                 {{$message}}
@@ -53,7 +81,8 @@
         </div>
         <div class="col-6">
             <label for="url" class="form-label">Url</label>
-            <input type="text"  name="url" id="url" value="{{old('url') ?? $project->url}}" class="form-control @error('url') is-invalid @enderror">
+            <input type="text" name="url" id="url" value="{{old('url') ?? $project->url}}"
+                class="form-control @error('url') is-invalid @enderror">
             @error('url')
             <div class="invalid-feedback">
                 {{$message}}

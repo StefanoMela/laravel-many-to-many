@@ -37,7 +37,7 @@ class Project extends Model
         $html = "";
         foreach($this->technologies as $technology)
         {
-            $html.= $technology ? "<span class='badge mx-1' style='background-color:{$technology->color}'>{$technology->label}</span>" : "Uncategorized";
+            $html.= $technology ? "<span class='badge rounded-pill mx-1' style='background-color:{$technology->color}'>{$technology->label}</span>" : "Uncategorized";
         }
         return $html;
     }
