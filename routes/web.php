@@ -28,13 +28,17 @@ Route::middleware(['auth', 'verified'])
   ->group(function () {
 
     Route::get('/', [AdminPageController::class, 'index'])->name('home');
-    
+
     Route::resource('projects', ProjectController::class);
+    
+    Route::get('projects/trash/', [ProjectController::class, 'softDelete'])->name('projects.trash');
 
     Route::resource('types', TypeController::class);
 
     Route::resource('technologies', TechnologyController::class);
 
   });
+  
+
 
 require __DIR__ . '/auth.php';

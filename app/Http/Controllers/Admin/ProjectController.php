@@ -129,4 +129,20 @@ class ProjectController extends Controller
             ->with('message_type', 'danger')
             ->with('message', 'Progetto eliminato con successo');
     }
+
+        /**
+     * Soft remove the specified resource from storage.
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+
+    public function softDelete() {
+
+        $title = 'Progetti Eliminati';
+        $trashed_projects = Project::onlyTrashed();
+
+        return view('admin.projects.trash.index', compact('title','trashed_projects'));
+
+    }
 }
