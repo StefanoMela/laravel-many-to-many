@@ -23,7 +23,8 @@ class ProjectController extends Controller
     {
         $title = "Laravel Boolfolio - Base";
         $projects = Project::orderby('id','desc')->paginate(15); // paginazione con ordine discdente in base all' ID
-        return view("admin.projects.index", compact("title","projects"));
+        $technologies = Technology::all();
+        return view("admin.projects.index", compact("title","projects",'technologies'));
     }
 
     /**
@@ -34,7 +35,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -47,13 +49,13 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
+        
         $project = new Project();
         $data['slug'] = Str::slug($data['title']);
         $project->fill($data);
         $project->save();
-
-        $project->technologies()->attach(1);
-
+        $project->technologies()->attach($data['technologies']);
+        
         return redirect()
         ->route('admin.projects.show', $project)
         ->with('message_type', 'success')
@@ -81,7 +83,7 @@ class ProjectController extends Controller
     {
 
         // $project = Project::findOrFail($id) -> metodo usabile quando non usiamo la dependecy injection
-        $types = Type::all();
+        $technologies = Technology::all();
         return view("admin.projects.edit", compact("project","types"));
     }
 

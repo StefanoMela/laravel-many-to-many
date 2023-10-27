@@ -6,6 +6,7 @@
       <div class="card-body text-center">
         <h5 class="card-title">{{ $project->title }}</h5>
         <p class="card-text">{!! $project->getBadge() !!}</p>
+        <p class="card-text">{!! $project->getTechBadges() !!}</p>
         <p class="card-text">{{ $project->description }}</p>
         <p class="card-text">{{ $project->slug }}</p>
         <p class="card-text">{{ $project->url }}</p>

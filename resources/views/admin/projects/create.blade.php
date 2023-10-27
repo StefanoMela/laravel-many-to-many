@@ -42,6 +42,16 @@
             </div>
             @enderror
         </div>
+        <div class="col-12">
+            <div class="row">
+                @foreach ($technologies as $technology)
+                <div class="col-12">
+                    <input type="checkbox" class="form-check-control" name="technologies[]" id="technology-{{$technology->id}}" value="{{$technology->id}}">
+                    <label for="technology-{{$technology->id}}">{{$technology->label}}</label>
+                </div>
+                @endforeach
+            </div>
+        </div>
         <div class="col-6">
             <label for="description" class="form-label">Descrizione</label>
             <input type="text" name="description" id="description" value="{{old('description')}}"

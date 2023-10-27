@@ -14,7 +14,7 @@ class Project extends Model
         'description',
         'slug',
         'url',
-        'type_id'
+        'type_id',
     ];
 
     public function type()
@@ -24,11 +24,21 @@ class Project extends Model
 
     public function technologies()
     {
-        return $this->belongsToMany(Technologies::class);
+        return $this->belongsToMany(Technology::class);
     }
 
     public function getBadge()
     {
         return $this->type ? "<span class='badge' style='background-color:{$this->type->color}'>{$this->type->label}</span>" : "Uncategorized" ;
+    }
+
+    public function getTechBadges()
+    {
+        $html = "";
+        foreach($this->technologies as $technology)
+        {
+            $html.= $technology ? "<span class='badge mx-1' style='background-color:{$technology->color}'>{$technology->label}</span>" : "Uncategorized";
+        }
+        return $html;
     }
 }

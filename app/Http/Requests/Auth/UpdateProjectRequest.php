@@ -34,7 +34,8 @@ class UpdateProjectRequest extends FormRequest
             // non blocchi con errore "il titolo è già esistente"
             'description'=>'required|string',
             'url'=>'required|string',
-            'type_id'=>'nullable|exists:types,id'
+            'type_id'=>'nullable|exists:types,id',
+            'technologies' => ['nullable','exists:technologies, id'],
         ];
     }
 
@@ -48,7 +49,8 @@ class UpdateProjectRequest extends FormRequest
             'description.string'=> 'La descrizione deve essere una stringa',
             'url.required'=> 'L\'url non deve essere vuoto',
             'url.string'=> 'L\'url deve essere una stringa',
-            'type_id.exists'=>'La categoria non è valida'
+            'type_id.exists'=>'La categoria non è valida',
+            'technologies.exists'=>'La tecnologia non è valida'
 
         ];
     }
