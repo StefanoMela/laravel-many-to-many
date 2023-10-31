@@ -36,6 +36,7 @@ class UpdateProjectRequest extends FormRequest
             'url'=>'required|string',
             'type_id'=>'nullable|exists:types,id',
             'technologies' => 'required|exists:technologies,id',
+            'image'=> 'nullable|image|max:512',
         ];
     }
 
@@ -52,7 +53,8 @@ class UpdateProjectRequest extends FormRequest
             'type_id.exists'=>'La categoria non è valida',
             'technologies.required'=>'Scegli almeno una tecnologia',
             'technologies.exists'=>'La tecnologia non è valida',
-
+            'image.image'=>'Il file caricato deve essere una immagine',
+            'image.max'=>'L\'immagine deve essere al massimo 512kb',
         ];
     }
 }

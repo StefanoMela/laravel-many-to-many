@@ -9,8 +9,10 @@ use App\Http\Requests\Auth\StoreProjectRequest;
 use App\Http\Requests\Auth\UpdateProjectRequest;
 use App\Models\Technology;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Termwind\Components\Dd;
+
 
 class ProjectController extends Controller
 {
@@ -52,6 +54,7 @@ class ProjectController extends Controller
         $project = new Project();
         $data['slug'] = Str::slug($data['title']);
         $project->fill($data);
+        $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
         $project->save();
         $project->technologies()->attach($data['technologies']);
 
@@ -156,6 +159,9 @@ class ProjectController extends Controller
 
         $project = Project::onlyTrashed()->findOrFail($id);
         $project->technologies()->detach();
+        if ($project->image) {
+            Storage::delete($project->image);
+        }
         $project->forceDelete();
 
         return redirect()->route('admin.projects.trash.index');

@@ -10,6 +10,12 @@
     <div class="card my-4 h-100">
       <div class="card-body text-center">
         <h5 class="card-title">{{ $project->title }}</h5>
+        @if($project->image)
+        <p class="card-text"><strong>Immagine: </strong>Si</p>
+        @else
+        <p class="card-text"><strong>Immagine: </strong>No</p>
+
+        @endif
         <p class="card-text"><strong>ID: </strong>{{ $project->id }}</p>
         <p class="card-text"><strong>Tipo: </strong>{!! $project->getBadge() !!}</p>
         <p class="card-text"><strong>Tecnologie utilizzate: </strong>{!! $project->getTechBadges() !!}</p>

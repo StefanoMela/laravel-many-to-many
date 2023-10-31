@@ -15,7 +15,7 @@
     @endif
 </div>
 <div class="container my-3 d-flex flex-column flex-wrap justify-content-center align-items-center">
-    <form action="{{route('admin.projects.store')}}" method="POST" class="row g-3">
+    <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data" class="row g-3">
         @csrf
         <div class="col-6">
             <label for="title" class="form-label">Titolo</label>
@@ -47,13 +47,9 @@
             <div class="form-check @error('technologies') is-invalid @enderror">
                 @foreach ($technologies as $technology)
                 <div class="col-12">
-                    <input 
-                    type="checkbox" 
-                    class="form-check-input" 
-                    name="technologies[]"
-                    id="technology-{{$technology->id}}" 
-                    value="{{$technology->id}}"
-                    @if(in_array($technology->id, old('technologies')?? [])) checked
+                    <input type="checkbox" class="form-check-input" name="technologies[]"
+                        id="technology-{{$technology->id}}" value="{{$technology->id}}" @if(in_array($technology->id,
+                    old('technologies')?? [])) checked
                     @endif
                     >
                     <label class="form-check-label" for="technology-{{$technology->id}}">{{$technology->label}}</label>
@@ -61,6 +57,17 @@
                 @endforeach
             </div>
             @error('technologies')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
+        </div>
+        <div class="col-12">
+            <div class="input-group w-50">
+                <input type="file" name="image" id="image" value="{{old('image')}}" class="form-control @error('image') is-invalid @enderror">
+                <label class="input-group-text" for="image">Upload</label>     
+            </div>
+            @error('image')
             <div class="invalid-feedback">
                 {{$message}}
             </div>
