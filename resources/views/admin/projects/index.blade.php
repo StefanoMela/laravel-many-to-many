@@ -5,11 +5,12 @@
     <h1 class="text-center">{{ $title }}</h1>
     <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Crea il tuo progetto</a>
     <a href="{{ route('admin.types.index') }}" class="btn btn-primary">Crea il tuo tipo di progetto</a>
-    <a href="{{route('admin.projects.trash')}}" class="btn btn-primary" >Vai al cestino</a>
+    <a href="{{route('admin.projects.trash.index')}}" class="btn btn-primary" >Vai al cestino</a>
     @foreach ($projects as $project)
     <div class="card my-4 h-100">
       <div class="card-body text-center">
         <h5 class="card-title">{{ $project->title }}</h5>
+        <p class="card-text"><strong>ID: </strong>{{ $project->id }}</p>
         <p class="card-text"><strong>Tipo: </strong>{!! $project->getBadge() !!}</p>
         <p class="card-text"><strong>Tecnologie utilizzate: </strong>{!! $project->getTechBadges() !!}</p>
         <p class="card-text"><strong>Descrizione: </strong>{{ $project->description }}</p>

@@ -29,16 +29,17 @@ Route::middleware(['auth', 'verified'])
 
     Route::get('/', [AdminPageController::class, 'index'])->name('home');
 
+    Route::get('/projects/trash', [ProjectController::class, 'softDelete'])->name('projects.trash.index');
+    Route::patch('/projects/trash/{project}/restore', [ProjectController::class, 'restore'])->name('projects.trash.restore');
+    Route::delete('/projects/trash/{project}', [ProjectController::class, 'forceDestroy'])->name('projects.trash.force-destroy');
+
     Route::resource('projects', ProjectController::class);
     
-    Route::get('projects/trash/', [ProjectController::class, 'softDelete'])->name('projects.trash');
 
     Route::resource('types', TypeController::class);
 
     Route::resource('technologies', TechnologyController::class);
 
   });
-  
-
 
 require __DIR__ . '/auth.php';

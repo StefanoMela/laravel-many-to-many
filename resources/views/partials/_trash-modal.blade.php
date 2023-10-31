@@ -9,11 +9,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Sicuro di voler cestinare il progetto "{{$project->title}}"?
+        Sicuro di voler eliminare <strong>definitivamente</strong> il progetto "{{$project->title}}"?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-        <form action="{{route('admin.projects.destroy', $project)}}" method="POST" class="my-1">
+        <form action="{{route('admin.projects.trash.force-destroy', $project)}}" method="POST" class="my-1">
           @csrf
           @method('DELETE')
           <button class="btn btn-danger">Elimina</button>
