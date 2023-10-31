@@ -15,7 +15,7 @@
     @endif
 </div>
 <div class="container my-3 d-flex flex-column flex-wrap justify-content-center align-items-center">
-    <form action="{{route('admin.projects.update', $project)}}" method="POST" class="row g-3">
+    <form action="{{route('admin.projects.update', $project)}}" enctype="multipart/form-data" method="POST" class="row g-3">
         @csrf
         @method('PUT')
         <div class="col-6">
@@ -68,6 +68,27 @@
             </div>
             @enderror
         </div>
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-4">
+                    <img src="{{asset('/storage/'. $project->image)}}" class="img-fluid" alt="project-image">
+                </div>
+                <div class="col-8">
+                    <div class="input-group w-50">
+                        <input type="file" name="image" id="image" value="{{old('image')}}" class="form-control @error('image') is-invalid @enderror">
+                        <label class="input-group-text" for="image">Upload</label>     
+                    </div>
+                    @error('image')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+
+        </div>
+
         <div class="col-6">
             <label for="description" class="form-label">Descrizione</label>
             <input type="text" name="description" id="description"

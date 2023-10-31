@@ -54,7 +54,9 @@ class ProjectController extends Controller
         $project = new Project();
         $data['slug'] = Str::slug($data['title']);
         $project->fill($data);
-        $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
+        if ($request->hasFile($data['image'])) {
+            $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
+        }
         $project->save();
         $project->technologies()->attach($data['technologies']);
 
@@ -103,6 +105,14 @@ class ProjectController extends Controller
         $data = $request->validated();
 
         $data['slug'] = Str::slug($data['title']);
+
+        if ($request->hasFile($data['image'])) {
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $project->image = Storage::put('uploads/projects/assets/images', $data['image']);
+        }
+
         $project->update($data);
 
         if (isset($data['technologies'])) {
