@@ -10,8 +10,8 @@ class PageController extends Controller
 {
   public function index()
   {
-    $title = "Homepage";
-    $projects = Project::limit(8)->get(); // prende i primi 8 post
+    $title = "Homepage - Featured Projects";
+    $projects = Project::limit(8)->where('published', 1)->get(); // prende i primi 8 post
     return view('guest.home', compact('title', 'projects'));
   }
 

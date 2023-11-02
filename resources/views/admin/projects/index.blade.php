@@ -14,7 +14,6 @@
         <p class="card-text"><strong>Immagine: </strong>Si</p>
         @else
         <p class="card-text"><strong>Immagine: </strong>No</p>
-
         @endif
         <p class="card-text"><strong>ID: </strong>{{ $project->id }}</p>
         <p class="card-text"><strong>Tipo: </strong>{!! $project->getBadge() !!}</p>
@@ -22,6 +21,24 @@
         <p class="card-text"><strong>Descrizione: </strong>{{ $project->description }}</p>
         <p class="card-text"><strong>Slug: </strong>{{ $project->slug }}</p>
         <p class="card-text"><strong>Url: </strong>{{ $project->url }}</p>
+        <p class="card-text"><strong>Pubblicato: </strong>
+          <form action="{{route('admin.projects.publish', $project)}}" method="POST"
+          id="form-published-{{$project->id}}">
+            @method('PATCH')
+            @csrf
+            <div class="d-flex justify-content-center mb-4 form-check form-switch">
+              <input 
+              class="form-check-input checkbox-published"
+              type="checkbox"
+              role="switch"
+              name="published"
+              data-id="{{$project->id}}"
+              @if ($project->published) checked @endif
+              >
+              <label class="form-check-label" for="published"></label>
+            </div>
+          </form>
+        </p>
         <a class="btn btn-primary" href="{{route('admin.projects.show', $project)}}">Dettagli</a>
         <a class="btn btn-warning" href="{{route('admin.projects.edit', $project)}}">Modifica</a>
         @include('partials._modal')
@@ -30,4 +47,17 @@
     @endforeach
     {{$projects->links('pagination::bootstrap-5')}}
   </section>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+  const checkboxesPublished = document.getElementsByClassName('checkbox-published');
+  for(checkbox of checkboxesPublished) {
+    checkbox.addEventListener('click', function() {
+      const projectId = this.getAttribute('data-id');
+      const form = document.getElementById('form-published-' + projectId);
+      form.submit();
+    })
+  }
+</script>
 @endsection

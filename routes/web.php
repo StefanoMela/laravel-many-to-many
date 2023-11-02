@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])
     Route::get('/projects/trash', [ProjectController::class, 'softDelete'])->name('projects.trash.index');
     Route::patch('/projects/trash/{project}/restore', [ProjectController::class, 'restore'])->name('projects.trash.restore');
     Route::delete('/projects/trash/{project}', [ProjectController::class, 'forceDestroy'])->name('projects.trash.force-destroy');
+    Route::patch('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
 
     Route::resource('projects', ProjectController::class);
     

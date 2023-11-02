@@ -12,6 +12,7 @@ use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectsMail;
 use Termwind\Components\Dd;
@@ -107,14 +108,14 @@ class ProjectController extends Controller
 
         $data['slug'] = Str::slug($data['title']);
 
-        if($request->hasFile('image')){
-            
+        if ($request->hasFile('image')) {
+
             if ($project->image) {
                 Storage::delete($project->image);
             }
             $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
         }
-        
+
         $project->update($data);
 
         if (isset($data['technologies'])) {
@@ -196,12 +197,16 @@ class ProjectController extends Controller
     }
 
 
-    public function sendMail (Project $project)
+    public function publish(Project $project, Request $request)
     {
+
+        $data = $request->all();
+        $project->published = Arr::exists($data, 'published') ? 1 : null;
+        $project->save();
+
         $user = Auth::user();
         Mail::to($user->email)->send(new ProjectsMail($project));
 
         return redirect()->back();
     }
-
 }
