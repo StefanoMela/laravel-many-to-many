@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\StoreProjectRequest;
@@ -11,6 +12,8 @@ use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectsMail;
 use Termwind\Components\Dd;
 
 
@@ -104,10 +107,14 @@ class ProjectController extends Controller
 
         $data['slug'] = Str::slug($data['title']);
 
-        Storage::delete($project->image);
-
-        $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
-
+        if($request->hasFile('image')){
+            
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $project->image = Storage::put("uploads/projects/assets/images", $data['image']);
+        }
+        
         $project->update($data);
 
         if (isset($data['technologies'])) {
@@ -187,4 +194,14 @@ class ProjectController extends Controller
 
         return redirect()->route('admin.projects.trash.index');
     }
+
+
+    public function sendMail (Project $project)
+    {
+        $user = Auth::user();
+        Mail::to($user->email)->send(new ProjectsMail($project));
+
+        return redirect()->back();
+    }
+
 }

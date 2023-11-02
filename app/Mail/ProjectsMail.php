@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,11 +20,11 @@ class ProjectsMail extends Mailable
      * @return void
      */
 
-    public $projects;
+    public $project;
 
-    public function __construct()
+    public function __construct(Project $project)
     {
-        
+        $this->project = $project;
     }
 
     /**
@@ -45,8 +46,11 @@ class ProjectsMail extends Mailable
      */
     public function content()
     {
+        $project = $this->project;
+
         return new Content(
-            view: 'view.name',
+            view: 'mail.project',
+            with: compact('project'),
         );
     }
 
